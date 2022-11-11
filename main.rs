@@ -1,3 +1,4 @@
+use std::env;
 use evdev::{Device, EventType, InputEventKind, Key};
 use std::fmt;
 
@@ -16,8 +17,12 @@ impl fmt::Display for State {
 }
 
 fn main() {
-    let mut device = Device::open("/dev/input/event0").expect(":(");
+    let args: Vec<String> = env::args().collect();
+    let dev_path = args.get(1).expect("Please specify event device!");
+    let mut device = Device::open(dev_path).expect(":(");
     let mut state = State::NoShift;
+
+    // let mut stack = Vec::new();
     loop {
         // let maybe_keypress = device.get_key_state();
 
