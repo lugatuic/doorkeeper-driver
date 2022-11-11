@@ -1,8 +1,8 @@
-use evdev::{Device, Vec, EventType, Key, InputEventKind};
+use evdev::{Device, EventType, InputEventKind, Key};
 
 fn main() {
     let mut device = Device::open("/dev/input/event0").expect(":(");
-    let mut stack 'static = Vec::new();
+    // let mut stack = Vec::new();
     loop {
         // let maybe_keypress = device.get_key_state();
 
@@ -15,10 +15,10 @@ fn main() {
         for ev in fes {
             match ev.kind() {
                 InputEventKind::Key(k) => {
-                    println!("Event for {k:?}");
-                    stack.push(
-
-                },
+                    if ev.value() == 1 {
+                        println!("Key {k:?} pressed");
+                    };
+                }
                 _ => (),
             }
         }
