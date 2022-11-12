@@ -9,7 +9,9 @@ use driver::imp::get_state;
 fn process_event(ev: InputEvent, state: &mut ShiftState) -> Option<Key> {
     match ev.kind() {
         InputEventKind::Key(k) => {
-            *state = get_state(ev.value(), k);
+            if let Some(shift_state) = get_state(ev.value(), k) {
+                *state = shift_state;
+            }
             Some(k)
         }
         _ => None

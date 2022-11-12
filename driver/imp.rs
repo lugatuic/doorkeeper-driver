@@ -12,12 +12,12 @@ impl fmt::Display for ShiftState {
     }
 }
 
-pub fn get_state(input_value: i32, k: Key) -> ShiftState {
+pub fn get_state(input_value: i32, k: Key) -> Option<ShiftState> {
     match (input_value, k) {
         (1, Key::KEY_LEFTSHIFT) |
-        (1, Key::KEY_RIGHTSHIFT) => ShiftState::Shift,
+        (1, Key::KEY_RIGHTSHIFT) => Some(ShiftState::Shift),
         (0, Key::KEY_LEFTSHIFT) |
-        (0, Key::KEY_RIGHTSHIFT) => ShiftState::NoShift,
-        _ => ShiftState::NoShift,
+        (0, Key::KEY_RIGHTSHIFT) => Some(ShiftState::NoShift),
+        _ => None,
     }
 }
