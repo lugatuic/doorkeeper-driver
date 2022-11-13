@@ -1,10 +1,10 @@
-use std::env;
 use evdev::{Device, InputEvent, InputEventKind, Key};
+use std::env;
 use std::fmt;
 mod driver;
 
+use driver::imp::{get_state, is_shift};
 use driver::ShiftState;
-use driver::imp::get_state;
 
 fn process_event(ev: InputEvent, state: &mut ShiftState) -> Option<Key> {
     match ev.kind() {
@@ -14,7 +14,7 @@ fn process_event(ev: InputEvent, state: &mut ShiftState) -> Option<Key> {
             }
             Some(k)
         }
-        _ => None
+        _ => None,
     }
 }
 
@@ -29,7 +29,9 @@ fn main() {
 
         for ev in fes {
             if let Some(k) = process_event(ev, &mut state) {
-                println!("Key pressed: {k:?}, {}", state);
+                if !is_shift(k) && ev.value() == 1 {
+                    println!("Key pressed: {k:?}, {}", state);
+                }
             }
         }
     }

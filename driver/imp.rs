@@ -12,6 +12,10 @@ impl fmt::Display for ShiftState {
     }
 }
 
+pub fn is_shift (k: Key) -> bool {
+    matches!(k, Key::KEY_LEFTSHIFT | Key::KEY_RIGHTSHIFT)
+}
+
 pub fn get_state(input_value: i32, k: Key) -> Option<ShiftState> {
     match (input_value, k) {
         (1, Key::KEY_LEFTSHIFT) |
