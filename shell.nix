@@ -1,5 +1,5 @@
 with import <nixpkgs> { };
 
 mkShell rec {
-  packages = [ rust-analyzer ];
+  packages = [ gcc gdb pkg-config libxkbcommon rust-analyzer ];
 }
