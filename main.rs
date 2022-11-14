@@ -12,10 +12,10 @@ fn process_event(ev: InputEvent, xk: &mut xkb::State) -> Option<Key> {
         InputEventKind::Key(k) => {
             if let Some(shift_state) = get_state(ev.value(), k) {
                 if let ShiftState::Shift = shift_state {
-                    xk.update_key(xkb::KEY_Shift_L + 8, xkb::KeyDirection::Down);
+                    _ = xk.update_key(xkb::KEY_Shift_L, xkb::KeyDirection::Down);
                     eprintln!("Shift down");
                 } else {
-                    xk.update_key(xkb::KEY_Shift_L + 8, xkb::KeyDirection::Up);
+                    _ = xk.update_key(xkb::KEY_Shift_L, xkb::KeyDirection::Up);
                     eprintln!("Shift up");
                 }
             }
@@ -49,15 +49,37 @@ fn main() {
         let fes = device.fetch_events().expect("No events :(");
 
         for ev in fes {
-            if let Some(k) = process_event(ev, &mut xkb_state) {
-                if !is_shift(k) && ev.value() == 1 {
-                    // println!("Key pressed: {k:?}, {}", state);
-                    let kode: u32 = (k.code() + ev_xkb_offset) as u32;
-                    let ksym = xkb_state.key_get_one_sym(kode);
-                    let s = xkb_state.key_get_utf8(kode);
-                    println!("Received: {s}\n");
-                }
-            }
+
+            let k = match extract_key(ev) {
+                Some(x) => x,
+                None => continue,
+            };
+
+            let up_down = if ev.value() == 1 {
+                xkb::KeyDirection::Down
+            } else {
+                xkb::KeyDirection::Up
+            };
+
+            let kode = (k.code() + ev_xkb_offset) as u32;
+
+            _ = xkb_state.update_key(kode, up_down);
+
+            let str = xkb_state.key_get_one_sym(kode);
+
+            println!("Read: {str:?}");
+            // if let Some(k) = process_event(ev, &mut xkb_state) {
+            //     let kode: u32 = (k.code() + ev_xkb_offset) as u32;
+            //     if !is_shift(k) && ev.value() == 1 {
+            //         // println!("Key pressed: {k:?}, {}", state);
+            //         xkb_state.update_key(kode, xkb::KeyDirection::Down);
+            //         let ksym = xkb_state.key_get_syms(kode);
+            //         let s = xkb_state.key_get_utf8(kode);
+            //         println!("Received: {ksym:?}\n");
+            //     } else {
+            //         xkb_state.update_key(kode, xkb::KeyDirection::Up);
+            //     }
+            // }
         }
     }
 }
