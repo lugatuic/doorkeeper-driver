@@ -2,7 +2,6 @@ use evdev::{Device, InputEventKind};
 use std::env;
 use std::io::{self, Write};
 use xkbcommon::xkb;
-extern crate ctrlc;
 
 fn main() -> io::Result<()> {
     let args: Vec<String> = env::args().collect();
