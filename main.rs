@@ -2,11 +2,11 @@ use evdev::{Device, InputEventKind};
 use std::env;
 use std::io::{self, Write};
 use xkbcommon::xkb;
+extern crate ctrlc;
 
 fn main() -> io::Result<()> {
     let args: Vec<String> = env::args().collect();
     let dev_path = args.get(1).expect("Please specify event device!");
-    let stdout = io::stdout ();
     let mut device = Device::open(dev_path).expect(":(");
     let ev_xkb_offset = 8;
     let xkb_ctx = xkb::Context::new(0);
@@ -15,6 +15,8 @@ fn main() -> io::Result<()> {
         .expect("Couldn't get keymap :(");
 
     let mut xkb_state = xkb::State::new(&xkb_keymap);
+
+    device.grab ().expect ("couldnt grab :(");
 
     loop {
         let fes = device.fetch_events().expect("No events :(");
@@ -47,4 +49,5 @@ fn main() -> io::Result<()> {
             }
         }
     }
+
 }
