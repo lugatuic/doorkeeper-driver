@@ -1,0 +1,3 @@
+[submodule "doorkeeper-controller"]
+	path = doorkeeper-controller
+	url = git@github.com:lugatuic/doorkeeper-controller.git
