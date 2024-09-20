@@ -1,9 +1,0 @@
-[Unit]
-Description="Reads keyboard input with door-driver and pipes to card reader script"
-
-[Service]
-WorkingDirectory=%h/door-driver
-ExecStart=%h/door-driver/fuck-systemd.sh
-
-[Install]
-WantedBy=default.target
