@@ -1,7 +1,7 @@
 [package]
 name = "door-driver"
 description = "An EVDEV driver written in Rust"
-author = ["Soham Gumaste <sgumas2@uic.edu>"]
+authors = ["Soham Gumaste <sgumas2@uic.edu>"]
 homepage = "https://lug.cs.uic.edu"
 repository = "https://github.com/lugatuic/doorkeeper-driver"
 license = "MIT"
